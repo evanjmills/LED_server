@@ -3,7 +3,7 @@ import websockets
 import board
 import neopixel
 
-pixels = neopixel.NeoPixel(board.NEOPIXEL, 190, auto_write=False)
+pixels = neopixel.NeoPixel(board.D18, 190, brightness=180, auto_write=False)
 
 async def set_lights(websocket, path):
     rgb = await websocket.recv()
