@@ -23,7 +23,7 @@ async def set_lights(websocket, path):
 
 if __name__ == '__main__':
     print('Starting Server...')
-    start_server = websockets.serve(set_lights, 'localhost', 8080)
+    start_server = websockets.serve(set_lights, '192.168.0.146', 8080)
 
     asyncio.get_event_loop().run_until_complete(start_server)
     print('Started!\n')

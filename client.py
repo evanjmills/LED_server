@@ -2,7 +2,7 @@ import asyncio
 import websockets
 
 async def set_lights():
-    uri = 'ws://localhost:8080'
+    uri = 'ws://192.168.0.146:8080'
 
     print('Connecting the websocket...')
 
