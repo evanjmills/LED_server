@@ -14,7 +14,7 @@ async def set_lights(websocket, path):
     #     rgb_values[i] = int(val)
 
     # pixels.fill((rgb_values[0], rgb_values[1], rgb_values[2]))
-    pixels.fill((255,255,255))
+    pixels.fill((0,0,255))
     pixels.show()
 
     response = f'The lights have been set to {rgb}'
