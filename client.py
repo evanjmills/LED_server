@@ -26,5 +26,7 @@ async def set_lights():
         response = await websocket.recv()
         print(f'Recieved: {response}')
 
+
 if __name__ == '__main__':
     asyncio.get_event_loop().run_until_complete(set_lights())
+    asyncio.get_event_loop().run_forever()

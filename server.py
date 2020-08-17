@@ -1,9 +1,9 @@
 import asyncio
 import websockets
-# import neopixel
+import board
+import neopixel
 
-def main():
-    pass
+pixels = neopixel.NeoPixel(board.NEOPIXEL, 1)
 
 async def set_lights(websocket, path):
     rgb = await websocket.recv()
@@ -18,6 +18,7 @@ async def set_lights(websocket, path):
     response = f'The lights have been set to {rgb}'
     print(f'Sent: {response}')
     await websocket.send(response)
+
 
 if __name__ == '__main__':
     print('Starting Server...')
