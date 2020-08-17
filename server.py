@@ -13,7 +13,7 @@ async def set_lights(websocket, path):
     for i, val in enumerate(rgb_values):
         rgb_values[i] = int(val)
 
-    pixels.fill(rgb_values[0], rgb_values[1], rgb_values[2])
+    pixels.fill((rgb_values[0], rgb_values[1], rgb_values[2]))
     pixels.show()
 
     response = f'The lights have been set to {rgb}'
