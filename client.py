@@ -29,4 +29,3 @@ async def set_lights():
 
 if __name__ == '__main__':
     asyncio.get_event_loop().run_until_complete(set_lights())
-    asyncio.get_event_loop().run_forever()
