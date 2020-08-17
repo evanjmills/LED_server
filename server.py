@@ -3,7 +3,7 @@ import websockets
 import board
 import neopixel
 
-pixels = neopixel.NeoPixel(board.NEOPIXEL, 1)
+pixels = neopixel.NeoPixel(board.NEOPIXEL, 190, auto_write=False)
 
 async def set_lights(websocket, path):
     rgb = await websocket.recv()
@@ -13,7 +13,8 @@ async def set_lights(websocket, path):
     for i, val in enumerate(rgb_values):
         rgb_values[i] = int(val)
 
-    print(rgb_values)
+    pixels.fill(rgb_values[0], rgb_values[1], rgb_values[2])
+    pixels.show()
 
     response = f'The lights have been set to {rgb}'
     print(f'Sent: {response}')
