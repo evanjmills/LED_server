@@ -2,10 +2,13 @@ import asyncio
 import websockets
 import board
 import neopixel
+import concurrent
+
+
+pixels = neopixel.NeoPixel(board.D18, 190, brightness=0.10, auto_write=False)
+
 
 def main():
-    pixels = neopixel.NeoPixel(board.D18, 190, brightness=0.10, auto_write=False)
-
     try:
         print('Starting Server...')
         start_server = websockets.serve(set_lights, '192.168.0.132', 8080)
