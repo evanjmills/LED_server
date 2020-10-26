@@ -44,9 +44,6 @@ async def set_lights(websocket, path):
         except websockets.exceptions.ConnectionClosedOK:
             print('Server Closed')
             break
-        except websockets.ConnectionClosedError:
-            websocket.close()
-            raise websockets.ConnectionClosedError(1, 'fuck')
         
 
 
