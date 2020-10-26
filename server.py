@@ -13,7 +13,7 @@ def main():
         print('Starting Server...')
         start_server = websockets.serve(set_lights, '192.168.0.132', 8080)
 
-        asyncio.get_event_loop().run_until_complete(start_server, 20)
+        asyncio.get_event_loop().run_until_complete(asyncio.wait_for(start_server, 20))
         print('Started!\n')
         asyncio.get_event_loop().run_forever()
     except asyncio.TimeoutError:
