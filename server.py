@@ -16,9 +16,9 @@ def main():
     asyncio.get_event_loop().run_forever()
 
 def restart():
-    asyncio.get_event_loop().run_until_complete(asyncio.get_event_loop().shutdown_asyncgens())
-    asyncio.get_event_loop().stop()
-    asyncio.get_event_loop().close()
+    asyncio.get_running_loop().run_until_complete(asyncio.get_running_loop().shutdown_asyncgens())
+    asyncio.get_running_loop().stop()
+    asyncio.get_running_loop().close()
 
     start_server = websockets.serve(set_lights, '192.168.0.132', 8080)
 
