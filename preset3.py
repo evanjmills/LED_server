@@ -4,8 +4,9 @@
 import board
 import neopixel
 import adafruit_fancyled.adafruit_fancyled as fancy
+import sys
 
-num_leds = 80
+num_leds = 50 if len(sys.argv) > 1 else sys.argv[1]
 
 # Declare a 6-element RGB rainbow palette
 palette = [
