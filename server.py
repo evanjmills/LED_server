@@ -16,6 +16,7 @@ def main():
     asyncio.get_event_loop().run_forever()
 
 def restart():
+    asyncio.get_event_loop().run_until_complete(asyncio.get_event_loop().shutdown_asyncgens())
     asyncio.get_event_loop().stop()
     asyncio.get_event_loop().close()
 
