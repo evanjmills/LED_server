@@ -9,12 +9,11 @@ pixels = neopixel.NeoPixel(board.D18, 190, brightness=0.10, auto_write=False)
 
 
 def main():
-    try:
-        start_server = websockets.serve(set_lights, '192.168.0.132', 8080)
+    start_server = websockets.serve(set_lights, '192.168.0.132', 8080)
 
-        asyncio.get_event_loop().run_until_complete(start_server)
-        print('Started!\n')
-        asyncio.get_event_loop().run_forever()
+    asyncio.get_event_loop().run_until_complete(start_server)
+    print('Started!\n')
+    asyncio.get_event_loop().run_forever()
 
 
 async def set_lights(websocket, path):
