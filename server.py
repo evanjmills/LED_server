@@ -15,6 +15,14 @@ def main():
     print('Started!\n')
     asyncio.get_event_loop().run_forever()
 
+def restart():
+    asyncio.get_event_loop().stop()
+
+    start_server = websockets.serve(set_lights, '192.168.0.132', 8080)
+
+    asyncio.get_event_loop().run_until_complete(start_server)
+    print('Started!\n')
+    asyncio.get_event_loop().run_forever()
 
 async def set_lights(websocket, path):
     while True:
@@ -34,10 +42,10 @@ async def set_lights(websocket, path):
             await websocket.send(response)
         except websockets.exceptions.ConnectionClosedOK:
             print('Server Closed')
-            main()
+            break
         except websockets.ConnectionClosedError:
             print('Restarting Server!\n')
-            main()
+            restart()
 
 
 if __name__ == '__main__':
