@@ -39,6 +39,8 @@ async def set_lights(websocket, path):
         except websockets.exceptions.ConnectionClosedOK:
             print('Server Closed')
             break
+        except concurrent.futures.CancelledError:
+            main()
         
 
 
