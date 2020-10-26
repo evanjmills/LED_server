@@ -5,9 +5,8 @@ import tkinter.ttk as ttk
 from tkcolorpicker import askcolor
 
 def main():
-    asyncio.get_event_loop().run_until_complete(set_lights())
-    print('Client Started')
-    asyncio.get_event_loop().run_forever()
+    while True:
+        asyncio.get_event_loop().run_until_complete(set_lights())
         
 
 async def set_lights():
@@ -16,6 +15,7 @@ async def set_lights():
     print('Connecting the websocket...')
 
     async with websockets.connect(uri) as websocket:
+        print('Client Started')
         while True:
             try:
                 root = tk.Tk()

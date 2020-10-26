@@ -38,6 +38,7 @@ async def set_lights(websocket, path):
             break
         except websockets.ConnectionClosedError:
             print('Restarting Server!\n')
+            websockets.close()
             start_server = websockets.serve(set_lights, '192.168.0.132', 8080)
 
             asyncio.get_event_loop().run_until_complete(start_server)
