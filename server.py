@@ -13,7 +13,7 @@ def main():
 
     asyncio.get_event_loop().run_until_complete(start_server)
     print('Started!\n')
-    # asyncio.get_event_loop().run_forever()
+    asyncio.get_event_loop().run_forever()
 
 def restart():
     asyncio.get_running_loop().run_until_complete(asyncio.get_running_loop().shutdown_asyncgens())
@@ -24,7 +24,7 @@ def restart():
 
     asyncio.get_event_loop().run_until_complete(start_server)
     print('Started!\n')
-    # asyncio.get_event_loop().run_forever()
+    asyncio.get_event_loop().run_forever()
 
 async def set_lights(websocket, path):
     while True:
