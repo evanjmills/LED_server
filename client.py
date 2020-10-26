@@ -1,5 +1,14 @@
 import asyncio
 import websockets
+import tkinter as tk
+import tkinter.ttk as ttk
+from tkcolorpicker import askcolor
+
+def main():
+    asyncio.get_event_loop().run_until_complete(set_lights())
+    print('Client Started')
+    asyncio.get_event_loop().run_forever()
+        
 
 async def set_lights():
     uri = 'ws://192.168.0.132:8080'
@@ -9,16 +18,15 @@ async def set_lights():
     async with websockets.connect(uri) as websocket:
         while True:
             try:
-                print('Connected!\n')
-                r = -1
-                g = -1
-                b = -1
-                while r not in range(0, 256):
-                    r = int(input('Red Value: '))
-                while g not in range(0, 256):
-                    g = int(input('Green Value: '))
-                while b not in range(0, 256):
-                    b = int(input('Blue Value: '))
+                root = tk.Tk()
+                style = ttk.Style(root)
+                style.theme_use('clam')
+
+                temp = askcolor()[0]
+                r = temp[0]
+                g = temp[1]
+                b = temp[2]
+                root.destroy()
 
                 rgb = f'{r},{g},{b}'
 
@@ -32,6 +40,5 @@ async def set_lights():
             
 
 if __name__ == '__main__':
-    asyncio.get_event_loop().run_until_complete(set_lights())
-    print('Client Started')
-    asyncio.get_event_loop().run_forever()
+    main()
+
