@@ -43,8 +43,6 @@ class Server:
                 code = await websocket.recv()
                 print(f'Recieved: {code}')
                 if code == 'p3':
-                    self.run_preset = False
-                    time.sleep(1)
                     self.run_preset = True
                     self.preset_thread = threading.Thread(target=self.preset3, name='p3')
                     
