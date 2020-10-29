@@ -21,7 +21,7 @@ class Client:
             asyncio.get_event_loop().run_until_complete(self.set_lights())
 
     async def connect_websockets(self):
-        uris = ['ws://192.168.0.132:8080', 'ws://192.168.0.145:8080', 'ws://192.168.0.146:8080']
+        uris = ['ws://192.168.0.132:8080', 'ws://192.168.0.144:8080', 'ws://192.168.0.145:8080', 'ws://192.168.0.146:8080', 'ws://192.168.0.147:8080']
 
         print('Connecting the websocket...')
         for uri in uris:
