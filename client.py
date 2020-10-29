@@ -5,43 +5,57 @@ import tkinter.ttk as ttk
 from tkcolorpicker import askcolor
 
 def main():
-    while True:
-        asyncio.get_event_loop().run_until_complete(set_lights())
+    client = Client()
+    client.run_client()
         
 
-async def set_lights():
-    uris = ['ws://192.168.0.132:8080', 'ws://192.168.0.145:8080']
-    ws = []
+class Client:
+    def __init__(self):
+        self.ws = []
 
-    print('Connecting the websocket...')
-    for uri in uris:
-        ws.append(await websockets.connect(uri))
-    
-    print('Client Started')
+    def run_client(self):
+        print('Connecting to servers')
+        asyncio.get_event_loop().run_until_complete(self.connect_websockets())
+        print(f'Connected to: {self.ws}')
+        while True:
+            asyncio.get_event_loop().run_until_complete(self.set_lights())
 
-    while True:
+    async def connect_websockets(self):
+        uris = ['ws://192.168.0.132:8080', 'ws://192.168.0.145:8080', 'ws://192.168.0.146:8080']
+
+        print('Connecting the websocket...')
+        for uri in uris:
+            try:
+                temp = await websockets.connect(uri)
+                self.ws.append(temp)
+            except Exception:
+                continue
+
+    async def set_lights(self):
         try:
             root = tk.Tk()
             style = ttk.Style(root)
             style.theme_use('clam')
 
+            rgb = None
+
             temp = askcolor()[0]
-            r = temp[0]
-            g = temp[1]
-            b = temp[2]
+            if temp == None:
+                rgb = 'p3'
+            else:
+                r = temp[0]
+                g = temp[1]
+                b = temp[2]
+
+                rgb = f'{r},{g},{b}'
+
             root.destroy()
 
-            rgb = f'{r},{g},{b}'
-
-            for websocket in ws:
-                await websocket.send(rgb)
-    
-            print(f'Sent: {rgb}')
-
-            response = await websocket.recv()
-            print(f'Recieved: {response}')
+            for websocket in self.ws:
+                await websocket.send(rgb)         
+            
         except websockets.exceptions.ConnectionClosed:
-            break
+            self.connect_websockets()
             
 
 if __name__ == '__main__':
