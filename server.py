@@ -6,7 +6,6 @@ import concurrent
 import threading
 import time
 import adafruit_fancyled.adafruit_fancyled as fancy
-from preset3 import preset3
 
 
 pixels = neopixel.NeoPixel(board.D18, 190, brightness=0.10, auto_write=False)
@@ -70,16 +69,13 @@ class Server:
                 self.restart()
 
     def preset3(self):
-        num_leds = 50
+        num_leds = 80
 
         # Declare a 6-element RGB rainbow palette
         palette = [
-            fancy.CRGB(1.0, 0.0, 0.0),  # Red
-            fancy.CRGB(0.5, 0.5, 0.0),  # Yellow
-            fancy.CRGB(0.0, 1.0, 0.0),  # Green
-            fancy.CRGB(0.0, 0.5, 0.5),  # Cyan
-            fancy.CRGB(0.0, 0.0, 1.0),  # Blue
-            fancy.CRGB(0.5, 0.0, 0.5),
+            fancy.CRGB(0.66, 0.0, 1.0),  # Green
+            fancy.CRGB(0.0, 1.0, 1.0),  # Cyan
+            fancy.CRGB(0.0, 0.75, 0.5),  # Blue
         ]  # Magenta
 
         # Declare a NeoPixel object on pin D6 with num_leds pixels, no auto-write.
@@ -93,7 +89,7 @@ class Server:
                 # Load each pixel's color from the palette using an offset, run it
                 # through the gamma function, pack RGB value and assign to pixel.
                 color = fancy.palette_lookup(palette, offset + i / num_leds)
-                color = fancy.gamma_adjust(color, brightness=0.25)
+                color = fancy.gamma_adjust(color, brightness=1.0)
                 pixels[i] = color.pack()
             pixels.show()
 
