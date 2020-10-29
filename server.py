@@ -25,7 +25,6 @@ class Server:
 
         asyncio.get_event_loop().run_until_complete(start_server)
         print('Started!\n')
-        asyncio.get_event_loop().run_forever()
 
 
     def restart(self):
@@ -37,7 +36,6 @@ class Server:
 
         asyncio.get_event_loop().run_until_complete(start_server)
         print('Started!\n')
-        asyncio.get_event_loop().run_forever()
 
     async def set_lights(self, websocket, path):
         while True:
@@ -47,8 +45,9 @@ class Server:
                 if code == 'p3':
                     self.run_preset = False
                     time.sleep(1)
-                    self.preset_thread = threading.Thread(target=self.preset3, name='p3')
                     self.run_preset = True
+                    self.preset_thread = threading.Thread(target=self.preset3, name='p3')
+                    
                     self.preset_thread.start()
                 else:
                     self.run_preset = False
