@@ -25,6 +25,7 @@ class Server:
 
         asyncio.get_event_loop().run_until_complete(start_server)
         print('Started!\n')
+        asyncio.get_event_loop().run_forever()
 
 
     def restart(self):
@@ -36,6 +37,7 @@ class Server:
 
         asyncio.get_event_loop().run_until_complete(start_server)
         print('Started!\n')
+        asyncio.get_event_loop().run_forever()
 
     async def set_lights(self, websocket, path):
         while True:
