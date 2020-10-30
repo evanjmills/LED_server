@@ -14,8 +14,8 @@ class Client:
         self.ws = []
 
     def run_client(self):
-        while True:
-            self.set_lights()
+        # while True:
+        self.set_lights()
 
     def connect_websockets(self):
         uris = ['ws://192.168.0.132:8080', 'ws://192.168.0.144:8080', 'ws://192.168.0.145:8080', 'ws://192.168.0.146:8080', 'ws://192.168.0.147:8080']
@@ -53,6 +53,9 @@ class Client:
 
         for web in self.ws:
             web.send(rgb)         
+        
+        for websocket in self.ws:
+            websocket.close()
 
 
 if __name__ == '__main__':

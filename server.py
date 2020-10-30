@@ -31,8 +31,15 @@ class Server:
 
 
     def restart(self):
+<<<<<<< HEAD
         self.loop.stop()
         self.loop.close()
+=======
+        asyncio.get_event_loop().run_until_complete(asyncio.get_event_loop().shutdown_asyncgens())
+        asyncio.get_event_loop().stop()
+        asyncio.get_event_loop().close()
+
+>>>>>>> parent of c580656... updated stuff
         start_server = websockets.serve(self.set_lights, '192.168.0.132', 8080)
 
         self.loop.run_until_complete(start_server)
