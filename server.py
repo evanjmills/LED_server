@@ -23,6 +23,8 @@ class Server:
     def start_server(self):
         start_server = websockets.serve(self.set_lights, '192.168.0.132', 8080)
 
+        self.loop = asyncio.new_event_loop()
+
         self.loop.run_until_complete(start_server)
         print('Started!\n')
         self.loop.run_forever()
