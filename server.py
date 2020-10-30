@@ -18,21 +18,23 @@ class Server:
         self.preset_thread = None
         self.num_leds = 190
         self.pixels = neopixel.NeoPixel(board.D18, self.num_leds, brightness=0.1, auto_write=False)
+        self.loop = asyncio.get_event_loop()
 
     def start_server(self):
         start_server = websockets.serve(self.set_lights, '192.168.0.132', 8080)
 
-        asyncio.get_event_loop().run_until_complete(start_server)
+        self.loop.run_until_complete(start_server)
         print('Started!\n')
-        asyncio.get_event_loop().run_forever()
+        self.loop.run_forever()
 
 
     def restart(self):
+        self.loop.close()
         start_server = websockets.serve(self.set_lights, '192.168.0.132', 8080)
 
-        asyncio.get_event_loop().run_until_complete(start_server)
+        self.loop.run_until_complete(start_server)
         print('Started!\n')
-        asyncio.get_event_loop().run_forever()
+        self.loop.run_forever()
 
     async def set_lights(self, websocket, path):
         while True:
