@@ -8,9 +8,6 @@ import time
 import adafruit_fancyled.adafruit_fancyled as fancy
 
 
-pixels = neopixel.NeoPixel(board.D18, 190, brightness=0.10, auto_write=False)
-
-
 def main():
     server = Server()
     server.start_server()
@@ -19,6 +16,8 @@ class Server:
     def __init__(self):
         self.run_preset = True
         self.preset_thread = None
+        self.num_leds = 190
+        self.pixels = neopixel.NeoPixel(board.D18, self.num_leds, brightness=0.1, auto_write=False)
 
     def start_server(self):
         start_server = websockets.serve(self.set_lights, '192.168.0.132', 8080)
@@ -46,6 +45,8 @@ class Server:
                 print(f'Recieved: {code}')
                 if code == 'p3':
                     self.run_preset = True
+                    if self.preset_thread != None:
+                        print(self.preset_thread.is_alive())
                     self.preset_thread = threading.Thread(target=self.preset3, name='p3')
                     
                     self.preset_thread.start()
@@ -55,8 +56,8 @@ class Server:
                     for i, val in enumerate(rgb_values):
                         rgb_values[i] = int(val)
 
-                    pixels.fill((rgb_values[0], rgb_values[1], rgb_values[2]))
-                    pixels.show()
+                    self.pixels.fill((rgb_values[0], rgb_values[1], rgb_values[2]))
+                    self.pixels.show()
 
                     response = f'The lights have been set to {code}'
                     print(f'Sent: {response}')
@@ -78,10 +79,6 @@ class Server:
             fancy.CRGB(0.0, 0.75, 0.5),  # Blue
         ]  # Magenta
 
-        # Declare a NeoPixel object on pin D6 with num_leds pixels, no auto-write.
-        # Set brightness to max because we'll be using FancyLED's brightness control.
-        pixels = neopixel.NeoPixel(board.D18, num_leds, brightness=0.1, auto_write=False)
-
         offset = 0  # Positional offset into color palette to get it to 'spin'
 
         while self.run_preset:
@@ -90,8 +87,8 @@ class Server:
                 # through the gamma function, pack RGB value and assign to pixel.
                 color = fancy.palette_lookup(palette, offset + i / num_leds)
                 color = fancy.gamma_adjust(color, brightness=1.0)
-                pixels[i] = color.pack()
-            pixels.show()
+                self.pixels[i] = color.pack()
+            self.pixels.show()
 
             offset += 0.002  # Bigger number = faster spin
 

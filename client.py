@@ -1,8 +1,8 @@
 import asyncio
-import websockets
 import tkinter as tk
 import tkinter.ttk as ttk
 from tkcolorpicker import askcolor
+from websocket import create_connection
 
 def main():
     client = Client()
@@ -14,49 +14,49 @@ class Client:
         self.ws = []
 
     def run_client(self):
-        print('Connecting to servers')
-        asyncio.get_event_loop().run_until_complete(self.connect_websockets())
-        print(f'Connected to: {self.ws}')
-        while True:
-            asyncio.get_event_loop().run_until_complete(self.set_lights())
+        # while True:
+        self.set_lights()
 
-    async def connect_websockets(self):
+    def connect_websockets(self):
         uris = ['ws://192.168.0.132:8080', 'ws://192.168.0.144:8080', 'ws://192.168.0.145:8080', 'ws://192.168.0.146:8080', 'ws://192.168.0.147:8080']
 
         print('Connecting the websocket...')
         for uri in uris:
             try:
-                temp = await websockets.connect(uri)
+                temp = create_connection(uri)
                 self.ws.append(temp)
             except Exception:
                 continue
+        
+        print(f'Connected to: {self.ws}')
 
-    async def set_lights(self):
-        try:
-            root = tk.Tk()
-            style = ttk.Style(root)
-            style.theme_use('clam')
+    def set_lights(self):
+        root = tk.Tk()
+        style = ttk.Style(root)
+        style.theme_use('clam')
 
-            rgb = None
+        rgb = None
 
-            temp = askcolor()[0]
-            if temp == None:
-                rgb = 'p3'
-            else:
-                r = temp[0]
-                g = temp[1]
-                b = temp[2]
+        temp = askcolor()[0]
+        if temp == None:
+            rgb = 'p3'
+        else:
+            r = temp[0]
+            g = temp[1]
+            b = temp[2]
 
-                rgb = f'{r},{g},{b}'
+            rgb = f'{r},{g},{b}'
 
-            root.destroy()
+        root.destroy()
 
-            for websocket in self.ws:
-                await websocket.send(rgb)         
-            
-        except websockets.exceptions.ConnectionClosed:
-            self.connect_websockets()
-            
+        self.connect_websockets()
+
+        for web in self.ws:
+            web.send(rgb)         
+        
+        for websocket in self.ws:
+            websocket.close()
+
 
 if __name__ == '__main__':
     main()
