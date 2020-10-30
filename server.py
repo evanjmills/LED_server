@@ -29,6 +29,7 @@ class Server:
 
 
     def restart(self):
+        self.loop.stop()
         self.loop.close()
         start_server = websockets.serve(self.set_lights, '192.168.0.132', 8080)
 
