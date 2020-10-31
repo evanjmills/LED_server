@@ -44,8 +44,9 @@ class Server:
                 code = await websocket.recv()
                 print(f'Recieved: {code}')
                 if code == 'p3':
-                    self.run_preset = False
-                    time.sleep(1)
+                    if(self.run_preset):
+                        self.run_preset = False
+                        time.sleep(1)
                     self.run_preset = True
                     if self.preset_thread != None:
                         print(self.preset_thread.is_alive())
@@ -53,8 +54,9 @@ class Server:
                     
                     self.preset_thread.start()
                 else:
-                    self.run_preset = False
-                    time.sleep(1)
+                    if(self.run_preset):
+                        self.run_preset = False
+                        time.sleep(0.5)
                     rgb_values = code.split(',')
                     for i, val in enumerate(rgb_values):
                         rgb_values[i] = int(val)

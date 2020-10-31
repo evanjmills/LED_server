@@ -28,7 +28,7 @@ class Client:
             except Exception:
                 continue
         
-        print(f'Connected to: {self.ws}')
+        print(f'Connected to: {len(self.ws)}')
 
     def set_lights(self):
         root = tk.Tk()
