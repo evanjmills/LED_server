@@ -44,6 +44,8 @@ class Server:
                 code = await websocket.recv()
                 print(f'Recieved: {code}')
                 if code == 'p3':
+                    self.run_preset = False
+                    time.sleep(1)
                     self.run_preset = True
                     if self.preset_thread != None:
                         print(self.preset_thread.is_alive())
