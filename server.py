@@ -54,6 +54,7 @@ class Server:
                     self.preset_thread.start()
                 else:
                     self.run_preset = False
+                    time.sleep(1)
                     rgb_values = code.split(',')
                     for i, val in enumerate(rgb_values):
                         rgb_values[i] = int(val)
