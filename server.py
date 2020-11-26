@@ -39,40 +39,39 @@ class Server:
         asyncio.get_event_loop().run_forever()
 
     async def set_lights(self, websocket, path):
-        while True:
-            try:
-                code = await websocket.recv()
-                print(f'Recieved: {code}')
-                if code == 'p3':
-                    if(self.run_preset):
-                        self.run_preset = False
-                        time.sleep(1)
-                    self.run_preset = True
-                    if self.preset_thread != None:
-                        print(self.preset_thread.is_alive())
-                    self.preset_thread = threading.Thread(target=self.preset3, name='p3')
-                    
-                    self.preset_thread.start()
-                else:
-                    if(self.run_preset):
-                        self.run_preset = False
-                        time.sleep(0.5)
-                    rgb_values = code.split(',')
-                    for i, val in enumerate(rgb_values):
-                        rgb_values[i] = int(val)
+        try:
+            code = await websocket.recv()
+            print(f'Recieved: {code}')
+            if code == 'p3':
+                if(self.run_preset):
+                    self.run_preset = False
+                    time.sleep(1)
+                self.run_preset = True
+                if self.preset_thread != None:
+                    print(self.preset_thread.is_alive())
+                self.preset_thread = threading.Thread(target=self.preset3, name='p3')
+                
+                self.preset_thread.start()
+            else:
+                if(self.run_preset):
+                    self.run_preset = False
+                    time.sleep(0.5)
+                rgb_values = code.split(',')
+                for i, val in enumerate(rgb_values):
+                    rgb_values[i] = int(val)
 
-                    self.pixels.fill((rgb_values[0], rgb_values[1], rgb_values[2]))
-                    self.pixels.show()
+                self.pixels.fill((rgb_values[0], rgb_values[1], rgb_values[2]))
+                self.pixels.show()
 
-                    response = f'The lights have been set to {code}'
-                    print(f'Sent: {response}')
-                    await websocket.send(response)
-            except websockets.exceptions.ConnectionClosedOK:
-                print('Server Closed')
-                break
-            except websockets.ConnectionClosedError:
-                print('Restarting Server!\n')
-                self.restart()
+                response = f'The lights have been set to {code}'
+                print(f'Sent: {response}')
+                await websocket.send(response)
+        except websockets.exceptions.ConnectionClosedOK:
+            print('Server Closed')
+            break
+        except websockets.ConnectionClosedError:
+            print('Restarting Server!\n')
+            self.restart()
 
     def preset3(self):
         num_leds = 80

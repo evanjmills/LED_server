@@ -5,59 +5,53 @@ from tkcolorpicker import askcolor
 from websocket import create_connection
 
 def main():
-    client = Client()
-    client.run_client()
+    root = tk.Tk()
+    root.geometry('500x500')
+    app = Client(master=root)
+    app.mainloop()
         
 
-class Client:
-    def __init__(self):
-        self.ws = []
+class Client(tk.Frame):
+    def __init__(self, master=None):
+        super().__init__(master)
+        self.uris = ['ws://192.168.0.132:8080', 'ws://192.168.0.144:8080', 'ws://192.168.0.145:8080', 'ws://192.168.0.146:8080', 'ws://192.168.0.147:8080', 'ws://192.168.0.148:8080']
+        self.master = master
+        self.pack()
+        self.create_widgets()
 
-    def run_client(self):
-        # while True:
-        self.set_lights()
+    def create_widgets(self):
+        self.p_3 = tk.Button(self.master, text='\nPreset 3\n', command=self.p3)
+        self.p_3.pack(fill=tk.X, side="top")
 
-    def connect_websockets(self):
-        uris = ['ws://192.168.0.132:8080', 'ws://192.168.0.144:8080', 'ws://192.168.0.145:8080', 'ws://192.168.0.146:8080', 'ws://192.168.0.147:8080', 'ws://192.168.0.148:8080']
+        self.choose_color = tk.Button(self.master, text="\nChoose Color\n", command=self.choose)
+        self.choose_color.pack(fill=tk.X, side="top")
 
-        print('Connecting the websocket...')
-        for uri in uris:
-            try:
-                temp = create_connection(uri)
-                self.ws.append(temp)
-            except Exception:
-                continue
-        
-        print(f'Connected to: {len(self.ws)}')
+        self.quit = tk.Button(self.master, text="QUIT", fg="red",
+                              command=self.master.destroy)
+        self.quit.pack(fill=tk.X, side="bottom")
 
-    def set_lights(self):
-        root = tk.Tk()
-        style = ttk.Style(root)
-        style.theme_use('clam')
+    def p3(self):
+        self.send_code('p3')
 
+    def choose(self):
         rgb = None
 
         temp = askcolor()[0]
-        if temp == None:
-            rgb = 'p3'
-        else:
+        if temp != None:
             r = temp[0]
             g = temp[1]
-            b = temp[2]
+            b = temp[2]            
 
             rgb = f'{r},{g},{b}'
 
-        root.destroy()
+            self.send_code(rgb)
 
-        self.connect_websockets()
-
-        for web in self.ws:
-            web.send(rgb)         
-        
-        for websocket in self.ws:
-            websocket.close()
+    def send_code(self, code):
+        for uri in self.uris:
+            connection = create_connection(uri)
+            connection.send(code)
+            connection.close
 
 
 if __name__ == '__main__':
     main()
-
