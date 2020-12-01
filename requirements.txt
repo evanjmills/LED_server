@@ -1,5 +1,6 @@
 asyncio
 websockets
+websocket-client
 adafruit-circuitpython-neopixel
 adafruit-circuitpython-fancyled
 tkcolorpicker
