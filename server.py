@@ -68,7 +68,6 @@ class Server:
                 await websocket.send(response)
         except websockets.exceptions.ConnectionClosedOK:
             print('Server Closed')
-            break
         except websockets.ConnectionClosedError:
             print('Restarting Server!\n')
             self.restart()
