@@ -1,20 +1,32 @@
-import asyncio
 import tkinter as tk
 import tkinter.ttk as ttk
 from tkcolorpicker import askcolor
 from websocket import create_connection
+import time
+from threading import Thread
 
 def main():
+    uris = ['ws://192.168.0.103:8080', 'ws://192.168.0.104:8080', 'ws://192.168.0.105:8080', 'ws://192.168.0.132:8080', 'ws://192.168.0.144:8080', 'ws://192.168.0.145:8080', 'ws://192.168.0.146:8080', 'ws://192.168.0.147:8080', 'ws://192.168.0.148:8080']
     root = tk.Tk()
     root.geometry('500x500')
-    app = Client(master=root)
-    app.mainloop()
-        
+    app = Client(master=root, uris=uris)
+    Thread(target=heartbeat, args=(uris,)).start()
+    Thread(target=app.mainloop()).start()
+
+
+def heartbeat(uris):
+    while True:
+        time.sleep(120)
+        for uri in uris:
+            connection = create_connection(uri)
+            connection.send('Ping')
+            connection.close
+
 
 class Client(tk.Frame):
-    def __init__(self, master=None):
+    def __init__(self, master=None, uris=None):
         super().__init__(master)
-        self.uris = ['ws://192.168.0.103', 'ws://192.168.0.104', 'ws://192.168.0.132:8080', 'ws://192.168.0.144:8080', 'ws://192.168.0.145:8080', 'ws://192.168.0.146:8080', 'ws://192.168.0.147:8080', 'ws://192.168.0.148:8080']
+        self.uris = uris
         self.master = master
         self.pack()
         self.create_widgets()

@@ -42,7 +42,9 @@ class Server:
         try:
             code = await websocket.recv()
             print(f'Recieved: {code}')
-            if code == 'p3':
+            if code == 'Ping':
+                await websocket.send('Pong')
+            elif code == 'p3':
                 if(self.run_preset):
                     self.run_preset = False
                     time.sleep(1)
@@ -73,6 +75,7 @@ class Server:
             self.restart()
 
     def preset3(self):
+        pass
         num_leds = 80
 
         # Declare a 6-element RGB rainbow palette
