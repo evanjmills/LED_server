@@ -42,6 +42,9 @@ class Client(tk.Frame):
                               command=self.master.destroy)
         self.quit.pack(fill=tk.X, side="bottom")
 
+        self.off = tk.Button(self.master, text='\n Off\n', command=self.off)
+        self.off.pack(fill=tk.X, side="bottom")
+
     def p3(self):
         self.send_code('p3')
 
@@ -57,6 +60,10 @@ class Client(tk.Frame):
             rgb = f'{r},{g},{b}'
 
             self.send_code(rgb)
+
+    def off(self):
+        rgb = '0,0,0'
+        self.send_code(rgb)
 
     def send_code(self, code):
         for uri in self.uris:
