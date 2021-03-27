@@ -6,7 +6,8 @@ import time
 from threading import Thread
 
 def main():
-    uris = ['ws://192.168.0.103:8080', 'ws://192.168.0.104:8080', 'ws://192.168.0.105:8080', 'ws://192.168.0.132:8080', 'ws://192.168.0.144:8080', 'ws://192.168.0.145:8080', 'ws://192.168.0.146:8080', 'ws://192.168.0.147:8080', 'ws://192.168.0.148:8080']
+    uris = ['ws://192.168.0.25:8080', 'ws://192.168.0.26:8080', 'ws://192.168.0.27:8080', 
+    'ws://192.168.0.28:8080', 'ws://192.168.0.29:8080', 'ws://192.168.0.30:8080', 'ws://192.168.0.31:8080', 'ws://192.168.0.32:8080', 'ws://192.168.0.33:8080']
     root = tk.Tk()
     root.geometry('500x500')
     app = Client(master=root, uris=uris)
@@ -71,6 +72,17 @@ class Client(tk.Frame):
             connection.send(code)
             connection.close
 
+
+class AreaSelector(tk.Frame):
+    def __init__(self, master=None, uris=None):
+        super().__init__(master)
+        self.uris = uris
+        self.master = master
+        self.pack()
+        self.create_widgets()
+
+    def create_widgets(self):
+        pass
 
 if __name__ == '__main__':
     main()
